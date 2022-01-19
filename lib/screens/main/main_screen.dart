@@ -79,14 +79,29 @@ class MainScreenState extends State<MainScreen> {
     } else {
       setState(() {
         _todoFuture = TodoService.getTodoListByUser(user.id);
-        //_todo = _todoFuture as List<Todo>;
       });
     }
   }
 
-  void addTodo(Todo todo) async {}
-  void updateTodo({int index, Todo todo}) async {}
-  void removeTodo(int index) async {}
+  void addTodo(Todo todo) async {
+    if (_user != null) {
+      todo.user = _user.id;
+      final Todo _todo = await TodoService.addTodo(todo);
+      setState(() => _todoList.add(_todo));
+    }
+  }
+
+  void updateTodo({int index, Todo todo}) async {
+    todo.user = _user.id;
+    final updatedTodo = await TodoService.updateTodo(todo);
+    todolist[index] = updatedTodo;
+    setState(() {});
+  }
+
+  void removeTodo(int index) async {
+    await TodoService.removeTodo(_todoList[index]);
+    refreshTodoListFuture();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +109,23 @@ class MainScreenState extends State<MainScreen> {
       onWillPop: () => Future.value(false),
       child: SafeArea(
         child: Scaffold(
-          appBar: Bar(),
-          body: Body(),
-          floatingActionButton: Float(),
+          appBar: Bar(
+            state: this,
+          ),
+          body: _user != null
+              ? Body(
+                  state: this,
+                )
+              : Container(
+                  child: Center(
+                    child: Text('Please first log in.'),
+                  ),
+                ),
+          floatingActionButton: _user != null
+              ? Float(
+                  state: this,
+                )
+              : null,
         ),
       ),
     );
