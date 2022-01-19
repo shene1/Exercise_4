@@ -53,6 +53,16 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   User _user;
+
+  List<Todo> _todo;
+  Future<List<Todo>> _todoFuture;
+
+  get user => _user;
+  set user(User value) {
+    _user = value;
+    refreshTodoListFuture();
+  }
+
   void addTodo(Todo todo) async {}
   void updateTodo({int index, Todo todo}) async {}
   void removeTodo(int index) async {}
