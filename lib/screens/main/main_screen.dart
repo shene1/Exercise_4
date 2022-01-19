@@ -53,7 +53,6 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   //   1. We declare all the states required for this screen. To be done in this file.
-
   User _user;
 
   List<Todo> _todo;
@@ -70,6 +69,20 @@ class MainScreenState extends State<MainScreen> {
 
   get todoList => _todoList;
   set todoList(value) => _todoList = value;
+
+  void refreshME() {
+    if (_user == null) {
+      setState(() {
+        _todoFuture = null;
+        _todo = null;
+      });
+    } else {
+      setState(() {
+        _todoFuture = TodoService.getTodoListByUser(user.id);
+        //_todo = _todoFuture as List<Todo>;
+      });
+    }
+  }
 
   void addTodo(Todo todo) async {}
   void updateTodo({int index, Todo todo}) async {}
