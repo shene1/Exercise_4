@@ -57,11 +57,11 @@ class MainScreenState extends State<MainScreen> {
   List<Todo> _todo;
   Future<List<Todo>> _todoFuture;
 
-  get user => _user;
-  set user(User value) {
-    _user = value;
-    refreshTodoListFuture();
-  }
+  User get user => this._user;
+
+  set user(User user) => setState(() {
+        _user = user;
+      });
 
   void addTodo(Todo todo) async {}
   void updateTodo({int index, Todo todo}) async {}
